@@ -1,0 +1,29 @@
+{
+  "name": "fcc-booktrade",
+  "version": "1.0.0",
+  "description": "Book trading app for FreeCodeCamp Projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abialbon/fcc-booktrade.git"
+  },
+  "keywords": [
+    "Node",
+    "Express",
+    "MongoDB"
+  ],
+  "author": "Abialbon Paul",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abialbon/fcc-booktrade/issues"
+  },
+  "homepage": "https://github.com/abialbon/fcc-booktrade#readme",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.3"
+  }
+}
