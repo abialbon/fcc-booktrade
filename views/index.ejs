@@ -1,39 +1,8 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Stork Books</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <script src="./js/script.js"></script>
-</head>
+<%- include('partials/head.ejs') %>
 <body>
-<nav class="navbar is-primary">
-    <div class="container">
-        <div class="navbar-brand">
-            <a href="#" class="navbar-item"><h1 class="title has-text-light">Stork Books</h1></a>
-            <button class="button navbar-burger is-primary" data-target="navMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-        <div class="navbar-menu" id="navMenu">
-            <div class="navbar-end">
-                <a href="#" class="navbar-item">Signup</a>
-                <a href="#" class="navbar-item">Login</a>
-                <a href="#" class="navbar-item">All Books</a>
-                <a href="#" class="navbar-item">My Books</a>
-                <a href="#" class="navbar-item"><i class="fa fa-cog"></i></a>
-                <a href="#" class="navbar-item">Logout</a>
-            </div>
-        </div>
-    </div>
-</nav>
+<%- include('partials/navbar.ejs') %>
 <div class="hero is-medium is-primary">
     <div class="hero-body">
         <img src="/svg/background.svg" alt="">
@@ -44,9 +13,27 @@
     </div>
 </div>
 
-<section>
+<section id="features">
     <div class="container">
-
+        <h1 class="title">Features</h1>
+        <div class="tile is-ancestor">
+            <div class="tile is-8 is-parent is-vertical">
+                <div class="tile is-child notification feature-tile">
+                    <img class="image is-64x64" src="./svg/light.svg" alt="Study">
+                    <p>You'll find a lot of books here. Choose the one you want while you trade the one you no longer need. A win-win !</p>
+                </div>
+                <div class="tile is-child notification feature-tile">
+                    <img class="image is-64x64" src="./svg/message.svg" alt="Study">
+                    <p>Direct message the person who trades the book. You can arrange your own mode of trade which would be convenient for both.</p>
+                </div>
+            </div>
+            <div class="tile is-4 is-parent">
+                <div class="tile is-child notification feature-tile">
+                    <img class="image is-64x64" src="./svg/money-bag.svg" alt="Study">
+                    <p>This is probably the best of all! You will be saving money while you minimise clutter in your house. Physical books are one of the best ways to relax. What are you waiting for? Let's trade a book today!</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 </body>
