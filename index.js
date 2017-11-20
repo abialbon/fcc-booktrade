@@ -2,6 +2,7 @@ const   express         = require('express'),
         app             = express(),
         path            = require('path'),
         bodyParser      = require('body-parser'),
+        flash           = require('connect-flash'),
         mongoose        = require('mongoose'),
         db              = require('./models/index'),
         passport        = require('passport'),
@@ -15,6 +16,8 @@ db.connect(process.env.DB_URL);
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 // Passport configuration
 const User = require('./models/user');
@@ -30,6 +33,13 @@ passport.use(new localStrategy({
 }, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// 🚨 Flash middleware
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.error = req.flash('error')[0];
+    next();
+});
 
 // 👤 Loading the user on the response locals
 app.use((req, res, next) => {

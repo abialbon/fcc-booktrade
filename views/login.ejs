@@ -3,6 +3,12 @@
 <%- include('partials/head.ejs') %>
 <body>
 <%- include('partials/navbar.ejs') %>
+<% if (error)  { %>
+<div class="notification is-danger">
+    <button class="delete"></button>
+    <%= error %>
+</div>
+<% } %>
 <div class="container">
     <div class="box auth-card">
         <h1 class="title">Login</h1>

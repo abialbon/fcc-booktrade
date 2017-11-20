@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/signup', (req, res) => {
-   res.render('signup');
+    res.render('signup');
 });
 
 router.get('/login', (req, res) => {
@@ -21,7 +21,7 @@ router.post('/signup', (req, res) => {
         name: req.body.name.trim()
     };
     User.register(newUser, req.body.password.trim(), (err, user) => {
-        if (err) { res.send({ error: err.message }) };
+        if (err) { res.send({ error: err.message }) }
         passport.authenticate('local')(req, res, () => {
             res.redirect('/');
         });
@@ -29,8 +29,10 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/login', passport.authenticate('local', {
+    successFlash: 'Welcome to Stork Books',
+    failureFlash: 'Invalid email or password',
     successRedirect: '/',
-    failureRedirect: '/signup'
+    failureRedirect: '/login'
 }));
 
 router.get('/books', (req, res) => {
