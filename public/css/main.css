@@ -16,7 +16,6 @@
 
 .hero-body .container {
     text-align: center;
-    transition: 0.5s all;
 }
 
 .auth-card {
@@ -24,17 +23,20 @@
     margin: 50px auto;
 }
 
-.auth-control {
-    display: flex;
-    justify-content: space-around;
-}
-
 .auth-control input {
     width: calc(100% - 82px);
 }
 
-#features {
-    margin: 70px auto;
+.header {
+    padding: 50px 0px;
+    background-color: #00cba9;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .feature-tile {
