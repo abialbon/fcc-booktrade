@@ -24,7 +24,10 @@ const userSchema = mongoose.Schema({
             type: String,
             default: 'pending'
         },
-        date: Date
+        date: {
+            type: Date,
+            default: new Date()
+        }
     }],
     requests: [{
         book: mongoose.Schema.Types.ObjectId,

@@ -23,6 +23,13 @@ const bookSchema = mongoose.Schema({
     date: {
         type: Date,
         default: new Date()
+    },
+    requested: {
+      type: Boolean,
+      default: false
+    },
+    requestedby: {
+        user: mongoose.Schema.Types.ObjectId
     }
 });
 

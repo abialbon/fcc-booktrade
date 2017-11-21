@@ -53,6 +53,16 @@ section {
     padding-top: 100px;
 }
 
+.notification-tag {
+    border-radius: 100% !important;
+    width: 1.5em !important;
+    height: 1.5em !important;
+    font-size: 10px;
+    font-weight: bold;
+    position: relative;
+    top: -10px;
+}
+
 @media screen and (min-width: 769px) {
     .hero-body .container {
         text-align: center;

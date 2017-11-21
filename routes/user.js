@@ -1,8 +1,9 @@
-const   express = require('express'),
-        router  = express.Router(),
-        mongoose= require('mongoose'),
-        Book    = mongoose.model('book'),
-        User    = mongoose.model('user');
+const   express     = require('express'),
+        router      = express.Router(),
+        checkuser   = require('../middleware/auth'),
+        mongoose    = require('mongoose'),
+        Book        = mongoose.model('book'),
+        User        = mongoose.model('user');
 
 router.get('/mybooks', checkuser, (req, res) => {
     User.findById(req.user._id)
@@ -15,6 +16,7 @@ router.get('/mybooks', checkuser, (req, res) => {
         });
 });
 
+// Form to add a book 📕
 router.get('/mybooks/add', checkuser, (req, res) => {
     let q = req.query.q;
     // ⚔️⚔️⚔ ****************************
@@ -38,6 +40,7 @@ router.get('/mybooks/add', checkuser, (req, res) => {
     res.render('addbooks', data);
 });
 
+// Endpoint to add the book 📕
 router.post('/mybooks/add', checkuser, (req, res) => {
     let newBook = Book(req.body);
     newBook.save()
@@ -49,7 +52,7 @@ router.post('/mybooks/add', checkuser, (req, res) => {
         });
 });
 
-router.delete('/mybooks/:id', (req, res) => {
+router.delete('/mybooks/:id', checkuser, (req, res) => {
     const q1 = Book.findByIdAndRemove(req.params.id);
     const q2 = User.findByIdAndUpdate(req.user._id, {
         $pull: { books: mongoose.Types.ObjectId(req.params.id) }
@@ -61,43 +64,25 @@ router.delete('/mybooks/:id', (req, res) => {
         .catch(err => res.send({ error: err.message }));
 });
 
-router.get('/settings',checkuser, (req, res) => {
-    res.render('settings', { state: req.user.state, city: req.user.city });
-});
 
-router.post('/settings',checkuser, (req, res) => {
-    User.findByIdAndUpdate(req.user._id, {
-        state: req.body.state,
-        city: req.body.city
-    })
-    .then(() => {
-        req.flash('success', 'Your preferences have been updated!');
-        res.redirect('/settings');
-    })
-});
-
-router.post('/changepassword', checkuser, (req, res) => {
-    User.findById(req.user._id)
-        .then(user => {
-            user.changePassword(req.body.currentpass.trim(), req.body.newpass.trim(), (error, result) => {
-                if (error) {
-                    req.flash('error', error.message);
-                    res.redirect('/settings');
-                } else {
-                    req.flash('success', 'Your password has been updated');
-                    res.redirect('/settings');
+// Requesting for a book 📕
+router.post('/books/:id', checkuser, (req, res) => {
+    Book.findByIdAndUpdate(req.params.id,
+        {
+            requested: true,
+            requestedby: { user: req.user._id }
+        })
+        .then(() => {
+            User.findByIdAndUpdate(req.user._id, {
+                requested: {
+                    book: mongoose.Types.ObjectId(req.params.id)
                 }
             })
+                .then(() => {
+                    res.send({ success: 'Book requested' })
+                })
         })
 });
 
-function checkuser(req, res, next) {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        req.flash('error', 'Please log in to access your page');
-        res.redirect('/login');
-    }
-}
 
 module.exports = router;

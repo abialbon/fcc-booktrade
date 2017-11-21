@@ -42,7 +42,7 @@ router.get('/books', (req, res) => {
     if (typeof page === 'number'&& isNaN(page)) {
         res.send({ error: 'Invalid page' })
     } else {
-        const query = Book.find({})
+        const query = Book.find({requested: false})
         // 👌 if the page no is one, there is no skip
             .skip((page - 1) * 10)
             .limit(10);

@@ -3,7 +3,17 @@
 <%- include('partials/head.ejs') %>
 <body>
 <%- include('partials/navbar.ejs') %>
-<h1>My books</h1>
+
+<div class="container">
+    <div class="tabs">
+        <ul>
+            <li class="is-active"><a>My books</a></li>
+            <li><a>My Requests <span class="tag is-info notification-tag">3</span></a></li>
+            <li><a>Requests to me</a></li>
+        </ul>
+    </div>
+</div>
+
 <section>
     <div class="container">
         <div class="columns is-centered">

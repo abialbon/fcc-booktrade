@@ -9,7 +9,8 @@ const   express         = require('express'),
         session         = require('express-session'),
         localStrategy   = require('passport-local').Strategy,
         indexRoutes     = require('./routes/index'),
-        userRoutes      = require('./routes/user');
+        userRoutes      = require('./routes/user'),
+        settingsRoutes  = require('./routes/settings');
 
 // Database connection
 db.connect(process.env.DB_URL);
@@ -52,6 +53,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', indexRoutes);
 app.use('/', userRoutes);
+app.use('/', settingsRoutes);
 
 app.listen(process.env.PORT, () => {
    console.log('The server is running at http://localhost:' + process.env.PORT);
