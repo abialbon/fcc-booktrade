@@ -4,5 +4,58 @@
 <body>
 <%- include('partials/navbar.ejs') %>
 <h1>My books</h1>
+<section>
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-three-quarters-tablet">
+                <!-- ➿ looping the returned results here... -->
+                <% if (books) { %>
+                <% for(var i = 0; i < books.length; i++) { %>
+                <div class="box">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64">
+                                <img class="book-thumbnail" src="<%= books[i].imgurl %>" alt="">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong class="book-title"><%= books[i].title %></strong>
+                                    <small class="book-authors">
+                                        <% if (books[i].authors) { %>
+                                        <%= books[i].authors %>
+                                        <% } %>
+                                    </small>
+                                    <br/>
+                                    <span class="book-description">
+                                        <% if (books[i].description) { %>
+                                        <%= books[i].description.slice(0, 140) + '...' %>
+                                        <% } %>
+                                    </span>
+                                </p>
+                            </div>
+                            <button data-bookid="<%= books[i]._id %>" class="book-delete button is-danger has-text-white">Delete</button>
+                        </div>
+                    </article>
+                </div>
+                <% }} %>
+                <!-- The loop -->
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var bookdelete = Array.prototype.slice.call(document.querySelectorAll('.book-delete'));
+    bookdelete.forEach(function($el) {
+        $el.addEventListener('click', function() {
+            superagent
+                .delete('/mybooks/' + this.dataset.bookid)
+                .end((err, res) => {
+                    window.location = '/mybooks';
+                })
+       });
+    });
+</script>
 </body>
 </html>

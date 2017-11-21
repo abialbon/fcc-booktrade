@@ -3,6 +3,56 @@
 <%- include('partials/head.ejs') %>
 <body>
 <%- include('partials/navbar.ejs') %>
-<h1>Settings</h1>
+<% if (success)  { %>
+<div class="notification is-success">
+    <button class="delete"></button>
+    <%= success %>
+</div>
+<% } %>
+<% if (error)  { %>
+<div class="notification is-danger">
+    <button class="delete"></button>
+    <%= error %>
+</div>
+<% } %>
+
+<div class="container">
+    <form action="/settings" method="post">
+        <div class="field">
+            <label for="city">City</label>
+            <div class="control">
+                <input class="input" type="text" id="city" name="city" placeholder="Update your city" value="<%= city %>">
+            </div>
+        </div>
+        <div class="field">
+            <label for="state">State</label>
+            <div class="control">
+                <input class="input" type="text" id="state" name="state" placeholder="Update your state" value="<%= state %>">
+            </div>
+        </div>
+        <div class="control">
+            <input class="button is-primary" type="submit" value="Update">
+        </div>
+    </form>
+
+    <form action="/changepassword" method="POST">
+        <div class="field">
+            <label for="currentpass">Current Password</label>
+            <div class="control">
+                <input class="input" type="password" id="currentpass" name="currentpass">
+            </div>
+        </div>
+        <div class="field">
+            <label for="newpass">New Password</label>
+            <div class="control">
+                <input class="input" type="password" id="newpass" name="newpass">
+            </div>
+        </div>
+        <div class="field">
+            <input type="submit" class="button is-danger" value="Save">
+        </div>
+    </form>
+</div>
+
 </body>
 </html>
