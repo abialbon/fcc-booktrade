@@ -1,12 +1,14 @@
 const   express = require('express'),
-        router  = express.Router();
-// 🙋‍♂️ TODO: These routes need to be checked for authentication 🔍
+        router  = express.Router(),
+        mongoose= require('mongoose'),
+        Book    = mongoose.model('book'),
+        User    = mongoose.model('user');
 
-router.get('/mybooks', (req, res) => {
+router.get('/mybooks', checkuser, (req, res) => {
    res.render('mybooks');
 });
 
-router.get('/mybooks/add', (req, res) => {
+router.get('/mybooks/add', checkuser, (req, res) => {
     let q = req.query.q;
     // ⚔️⚔️⚔ ****************************
     // TODO: Change the test data
@@ -27,6 +29,21 @@ router.get('/mybooks/add', (req, res) => {
         data = { books: undefined, q: '' }
     }
     res.render('addbooks', data);
+});
+
+router.post('/mybooks/add', checkuser, (req, res) => {
+    let newBook = Book(req.body);
+    newBook.save()
+        .then(book => {
+            User.findByIdAndUpdate(req.user._id, {
+                $push: { books: book._id }
+            })
+                .then(() => res.send({ success: 'Book saved' }));
+        });
+});
+
+router.get('/settings',checkuser, (req, res) => {
+   res.render('settings');
 });
 
 function checkuser(req, res, next) {

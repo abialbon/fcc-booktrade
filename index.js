@@ -17,6 +17,7 @@ db.connect(process.env.DB_URL);
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Passport configuration
 const User = require('./models/user');

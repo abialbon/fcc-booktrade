@@ -31,25 +31,27 @@
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
-                                <img src="<%= books[i].imgurl %>" alt="">
+                                <img class="book-thumbnail" src="<%= books[i].imgurl %>" alt="">
                             </figure>
                         </div>
                         <div class="media-content">
                             <div class="content">
                                 <p>
-                                    <strong><%= books[i].title %></strong>
-                                    <small>
+                                    <strong class="book-title"><%= books[i].title %></strong>
+                                    <small class="book-authors">
                                         <% if (books[i].authors) { %>
                                         <%= books[i].authors.join(', ') %>
                                         <% } %>
                                     </small>
                                     <br/>
-                                    <% if (books[i].description) { %>
-                                    <%= books[i].description.slice(0, 140) + '...' %>
-                                    <% } %>
+                                    <span class="book-description">
+                                        <% if (books[i].description) { %>
+                                        <%= books[i].description.slice(0, 140) + '...' %>
+                                        <% } %>
+                                    </span>
                                 </p>
                             </div>
-                            <button class="button is-warning has-text-white">Add</button>
+                            <button class="book-add button is-warning has-text-white">Add</button>
                         </div>
                     </article>
                 </div>
@@ -59,6 +61,42 @@
         </div>
     </div>
 </section>
+<div class="modal">
+    <div onclick="closeModal()" class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1 class="title">Your book has been saved</h1>
+        </div>
+    </div>
+    <button onclick="closeModal()" class="modal-close is-large" aria-label="close"></button>
+</div>
+<script>
+    function closeModal() {
+        document.querySelector('.modal').classList += '.modal';
+    }
+
+    var user = <%- JSON.stringify(user) || 'undefined' %>;
+
+    var $bookAdd = Array.prototype.slice.call(document.querySelectorAll('.book-add'));
+    $bookAdd.forEach(function($el) {
+       $el.addEventListener('click', function() {
+            var p = this.parentNode.parentNode;
+            var newBook = {
+                user: user._id,
+                title : p.querySelector('.book-title').innerText.trim(),
+                authors : p.querySelector('.book-authors').innerText.trim(),
+                description : p.querySelector('.book-description').innerText.trim(),
+                imgurl : p.querySelector('.book-thumbnail').src
+            }
+            superagent
+                .post('/mybooks/add')
+                .send(newBook)
+                .end(function(err, res) {
+                   document.querySelector('.modal').classList += ' is-active';
+                });
+       })
+    });
+</script>
 
 </body>
 </html>
