@@ -6,7 +6,7 @@ const bookSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    author: {
+    authors: {
         type: String,
         required: true,
         trim: true
@@ -15,9 +15,14 @@ const bookSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    imageurl: {
+    imgurl: {
         type: String,
         trim: true
+    },
+    user: mongoose.Schema.Types.ObjectId,
+    date: {
+        type: Date,
+        default: new Date()
     }
 });
 

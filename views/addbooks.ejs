@@ -4,25 +4,25 @@
 <body>
 <%- include('partials/navbar.ejs') %>
 
-<section class="header">
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-one-fifth-tablet header-pic">
-                <img src="./svg/bookshelf.svg" alt="">
+<div class="hero is-info is-medium is-bold">
+    <div class="hero-body">
+        <div class="title">Add your books</div>
+        <div class="field has-addons">
+            <div class="control">
+                <input class="input" type="text"
+                value="<%= q %>"
+                />
             </div>
-            <div class="column is-two-fifths-tablet header-title">
-                <h1 class="title is-1 has-text-white">All Books</h1>
+            <div class="control">
+                <button class="button is-primary"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <section>
     <div class="container">
-        <div class="columns">
-            <div class="column is-one-quarter-tablet">
-
-            </div>
+        <div class="columns is-centered">
             <div class="column is-three-quarters-tablet">
                 <!-- ➿ looping the returned results here... -->
                 <% if (books) { %>
@@ -40,7 +40,7 @@
                                     <strong><%= books[i].title %></strong>
                                     <small>
                                         <% if (books[i].authors) { %>
-                                        <%= books[i].authors %>
+                                        <%= books[i].authors.join(', ') %>
                                         <% } %>
                                     </small>
                                     <br/>
@@ -49,19 +49,16 @@
                                     <% } %>
                                 </p>
                             </div>
-                            <button class="button is-warning has-text-white">Request</button>
+                            <button class="button is-warning has-text-white">Add</button>
                         </div>
                     </article>
                 </div>
                 <% }} %>
-
-            <!-- 💃 Pagination -->
-                <%- include('partials/pagination.ejs') %>
+                <!-- The loop -->
             </div>
         </div>
     </div>
 </section>
-
 
 </body>
 </html>

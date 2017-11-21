@@ -1,0 +1,57 @@
+<!-- 💃 Pagination -->
+<nav class="pagination" role="navigation" aria-label="pagination">
+    <% if(currentPage == 1) { %>
+    <a class="pagination-previous" disabled aria-disabled="true">Previous</a>
+    <% } else { %>
+    <a href="<%= '/books?page=' + (currentPage - 1) %>" class="pagination-previous">Previous</a>
+    <% } %>
+    <% if(currentPage == pages) { %>
+    <a class="pagination-next" disabled aria-disabled="true">Next</a>
+    <% } else{ %>
+    <a href="<%= '/books?page=' + (currentPage + 1) %>" class="pagination-next">Next</a>
+    <% } %>
+
+    <ul class="pagination-list">
+        <!--If the number of pages are less than 7 -->
+        <% if(pages <= 7) { %>
+        <% for (var p1 = 1; p1 <= pages; p1++ ) { %>
+        <li>
+            <% if (p1 == currentPage) { %>
+            <a href="<%= '/books?page=' + p1 %>" class="pagination-link is-current" aria-label="<%= 'Page ' + p1  %>" aria-current="page"><%= p1 %></a>
+            <% } else { %>
+            <a href="<%= '/books?page=' + p1 %>" class="pagination-link" aria-label="<%= 'Page ' + p1  %>"><%= p1 %></a>
+            <% } %>
+        </li>
+        <% } %>
+        <!-- Else if the current page is <= 3 -->
+        <% } else if (currentPage <= 3) { %>
+        <% for (var p2 = 1; p2 <= 3; p2++ ) { %>
+        <li>
+            <% if (p2 == currentPage) { %>
+            <a href="<%= '/books?page=' + p2 %>" class="pagination-link is-current" aria-label="<%= 'Page ' + p2  %>" aria-current="page"><%= p2 %></a>
+            <% } else { %>
+            <a href="<%= '/books?page=' + p2 %>" class="pagination-link" aria-label="<%= 'Page ' + p2  %>"><%= p2 %></a>
+            <% } %>
+        </li>
+        <% } %>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a href="<%= '/books?page=' + pages %>" class="pagination-link" aria-label="<%= 'Page ' + pages  %>"><%= pages %></a></li>
+        <% } else { %>
+        <!-- Else pages are more than 7 -->
+        <li><a href="/books?page=1" class="pagination-link" aria-label="<%= 'Page 1'%>">1</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <% for (var p2 = currentPage - 1; p2 <= currentPage + 1; p2++ ) { %>
+        <li>
+            <% if (p2 == currentPage) { %>
+            <a href="<%= '/books?page=' + p2 %>" class="pagination-link is-current" aria-label="<%= 'Page ' + p2  %>" aria-current="page"><%= p2 %></a>
+            <% } else { %>
+            <a href="<%= '/books?page=' + p2 %>" class="pagination-link" aria-label="<%= 'Page ' + p2  %>"><%= p2 %></a>
+            <% } %>
+        </li>
+        <% } %>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a href="<%= '/books?page=' + pages %>" class="pagination-link" aria-label="<%= 'Page ' + pages  %>"><%= pages %></a></li>
+        <% } %>
+    </ul>
+</nav>
+<!--End of pagination -->

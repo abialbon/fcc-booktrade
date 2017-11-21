@@ -1,7 +1,8 @@
 const   express     = require('express'),
         router      = express.Router(),
         passport    = require('passport'),
-        User        = require('../models/user');
+        User        = require('../models/user'),
+        Book        = require('../models/book');
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -36,7 +37,31 @@ router.post('/login', passport.authenticate('local', {
 }));
 
 router.get('/books', (req, res) => {
-   res.render('books');
+    let page = +req.query.page || 1;
+    // 🤨 Double checking for NaN here
+    if (typeof page === 'number'&& isNaN(page)) {
+        res.send({ error: 'Invalid page' })
+    } else {
+        const query = Book.find({})
+        // 👌 if the page no is one, there is no skip
+            .skip((page - 1) * 10)
+            .limit(10);
+
+        const count = Book.find({})
+            .count();
+
+        Promise.all([query, count])
+            .then(result => {
+                res.render('books', {
+                    books: result[0],
+                    pages: Math.ceil(result[1] / 10),
+                    currentPage: page
+                })
+            })
+            .catch(err => {
+                res.render({ error: err.message });
+            })
+    }
 });
 
 router.get('/logout', (req, res) => {

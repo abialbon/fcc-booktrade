@@ -6,9 +6,11 @@ module.exports.connect = (db_URL) => {
     mongoose.Promise = global.Promise;
 
     mongoose.connection
-        .once('open', () => console.log('Connection to the database is established'))
+        .once('open', () => {
+            console.log('Connection to the database is established');
+            mongoose.Promise = global.Promise;
+            require('./user');
+            require('./book');
+        })
         .on('error', () => process.exit(1));
-
-    require('./user');
-    require('./book');
 };
