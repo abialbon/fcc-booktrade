@@ -7,8 +7,8 @@
 <div class="container">
     <div class="tabs">
         <ul>
-            <li href="#" class="is-active"><a>My books</a></li>
-            <li><a href="/myrequests">My Requests <span class="tag is-info notification-tag"><%= user.requested.length %></span></a></li>
+            <li><a href="/mybooks">My books</a></li>
+            <li class="is-active"><a>My Requests</a></li>
             <li><a href="/requests">Requests to me</a></li>
         </ul>
     </div>
@@ -25,27 +25,28 @@
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
-                                <img class="book-thumbnail" src="<%= books[i].imgurl %>" alt="">
+                                <img class="book-thumbnail" src="<%= books[i].book.imgurl %>" alt="">
                             </figure>
                         </div>
                         <div class="media-content">
                             <div class="content">
                                 <p>
-                                    <strong class="book-title"><%= books[i].title %></strong>
+                                    <strong class="book-title"><%= books[i].book.title %></strong>
                                     <small class="book-authors">
-                                        <% if (books[i].authors) { %>
-                                        <%= books[i].authors %>
+                                        <% if (books[i].book.authors) { %>
+                                        <%= books[i].book.authors %>
                                         <% } %>
                                     </small>
                                     <br/>
                                     <span class="book-description">
-                                        <% if (books[i].description) { %>
-                                        <%= books[i].description.slice(0, 140) + '...' %>
+                                        <% if (books[i].book.description) { %>
+                                        <%= books[i].book.description.slice(0, 140) + '...' %>
                                         <% } %>
                                     </span>
                                 </p>
                             </div>
-                            <button data-bookid="<%= books[i]._id %>" class="book-delete button is-danger has-text-white">Delete</button>
+                            <span class="tag">Requested on <%= books[i].date.toDateString() %></span>
+                            <span class="tag">Status <%= books[i].status %></span>
                         </div>
                     </article>
                 </div>
@@ -56,16 +57,7 @@
     </div>
 </section>
 <script>
-    var bookdelete = Array.prototype.slice.call(document.querySelectorAll('.book-delete'));
-    bookdelete.forEach(function($el) {
-        $el.addEventListener('click', function() {
-            superagent
-                .delete('/mybooks/' + this.dataset.bookid)
-                .end((err, res) => {
-                    window.location = '/mybooks';
-                })
-       });
-    });
+
 </script>
 </body>
 </html>

@@ -29,7 +29,8 @@ const bookSchema = mongoose.Schema({
       default: false
     },
     requestedby: {
-        user: mongoose.Schema.Types.ObjectId
+        user: mongoose.Schema.Types.ObjectId,
+        name: String
     }
 });
 

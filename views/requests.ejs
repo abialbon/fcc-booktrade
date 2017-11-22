@@ -7,9 +7,9 @@
 <div class="container">
     <div class="tabs">
         <ul>
-            <li href="#" class="is-active"><a>My books</a></li>
-            <li><a href="/myrequests">My Requests <span class="tag is-info notification-tag"><%= user.requested.length %></span></a></li>
-            <li><a href="/requests">Requests to me</a></li>
+            <li><a href="/mybooks">My books</a></li>
+            <li><a href="/myrequests">My Requests</a></li>
+            <li class="is-active"><a href="#">Requests to me</a></li>
         </ul>
     </div>
 </div>
@@ -45,7 +45,8 @@
                                     </span>
                                 </p>
                             </div>
-                            <button data-bookid="<%= books[i]._id %>" class="book-delete button is-danger has-text-white">Delete</button>
+                            <span class="tag">Requested on <%= books[i].date.toDateString() %></span>
+                            <span class="tag">Requested by <%= books[i].requestedby.name %></span>
                         </div>
                     </article>
                 </div>
@@ -56,16 +57,7 @@
     </div>
 </section>
 <script>
-    var bookdelete = Array.prototype.slice.call(document.querySelectorAll('.book-delete'));
-    bookdelete.forEach(function($el) {
-        $el.addEventListener('click', function() {
-            superagent
-                .delete('/mybooks/' + this.dataset.bookid)
-                .end((err, res) => {
-                    window.location = '/mybooks';
-                })
-       });
-    });
+
 </script>
 </body>
 </html>

@@ -17,9 +17,12 @@ const userSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    books: [mongoose.Schema.Types.Object],
+    books: [mongoose.Schema.Types.ObjectId],
     requested: [{
-        book: mongoose.Schema.Types.Object,
+        book: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'book'
+        },
         status: {
             type: String,
             default: 'pending'
@@ -27,13 +30,6 @@ const userSchema = mongoose.Schema({
         date: {
             type: Date,
             default: new Date()
-        }
-    }],
-    requests: [{
-        book: mongoose.Schema.Types.ObjectId,
-        status: {
-            type: String,
-            default: 'pending'
         }
     }],
     state: {

@@ -64,24 +64,56 @@ router.delete('/mybooks/:id', checkuser, (req, res) => {
         .catch(err => res.send({ error: err.message }));
 });
 
+// See the user's requests
+router.get('/myrequests', checkuser, (req, res) => {
+    User.findById(req.user._id)
+        .populate({
+            path: 'requested.book',
+            model: 'book'
+        })
+        .then(user => {
+            res.render('myrequests', { books: user.requested })
+        })
+});
+
+//See who's made requests to me
+router.get('/requests', checkuser, (req, res) => {
+    User.findById(req.user._id)
+        .populate({
+            path: 'books',
+            model: 'book'
+        })
+        .then(user => {
+            let requestedBooks = user.books.filter(x => x.requested === true);
+            res.render('requests', { books: requestedBooks })
+        })
+});
 
 // Requesting for a book 📕
 router.post('/books/:id', checkuser, (req, res) => {
     Book.findByIdAndUpdate(req.params.id,
         {
             requested: true,
-            requestedby: { user: req.user._id }
+            requestedby: {
+                user: req.user._id,
+                name: req.user.name
+            }
         })
         .then(() => {
             User.findByIdAndUpdate(req.user._id, {
-                requested: {
-                    book: mongoose.Types.ObjectId(req.params.id)
+                $push: {
+                    requested: {
+                        book: mongoose.Types.ObjectId(req.params.id),
+                        date: new Date()
+                    }
                 }
             })
                 .then(() => {
                     res.send({ success: 'Book requested' })
                 })
+                .catch(e => console.log('Error here', e.message))
         })
+        .catch(e => console.log(e.message))
 });
 
 
