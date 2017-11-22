@@ -7,6 +7,7 @@ const   express         = require('express'),
         db              = require('./models/index'),
         passport        = require('passport'),
         session         = require('express-session'),
+        MongoStore      = require('connect-mongo')(session),
         localStrategy   = require('passport-local').Strategy,
         indexRoutes     = require('./routes/index'),
         userRoutes      = require('./routes/user'),
@@ -23,11 +24,20 @@ app.use(bodyParser.json());
 
 // Passport configuration
 const User = require('./models/user');
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-}));
+if (process.env.ENV = 'production') {
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
+    }));
+} else {
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+    }));
+}
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy({
