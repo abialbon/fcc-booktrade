@@ -9,12 +9,12 @@
         <div class="title">Add your books</div>
         <div class="field has-addons">
             <div class="control">
-                <input class="input" type="text"
+                <input id="book-search-title" class="input" type="text"
                 value="<%= q %>"
                 />
             </div>
             <div class="control">
-                <button class="button is-primary"><i class="fa fa-search"></i></button>
+                <button id="book-search" class="button is-primary"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </div>
@@ -96,6 +96,14 @@
                 });
        })
     });
+
+    $bookSearch = document.querySelector('#book-search');
+    $bookSearch.addEventListener('click', function() {
+       var q = document.querySelector('#book-search-title').value;
+       console.log(q);
+       window.location = '/mybooks/add?q=' + q;
+    });
+
 </script>
 
 </body>

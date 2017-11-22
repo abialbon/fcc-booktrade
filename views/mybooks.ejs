@@ -4,11 +4,13 @@
 <body>
 <%- include('partials/navbar.ejs') %>
 
+<%- include('partials/section-head.ejs', { svgurl: './svg/books.svg', titletext: 'My Books' })%>
+
 <div class="container">
     <div class="tabs">
         <ul>
             <li href="#" class="is-active"><a>My books</a></li>
-            <li><a href="/myrequests">My Requests <span class="tag is-info notification-tag"><%= user.requested.length %></span></a></li>
+            <li><a href="/myrequests">My Requests</a></li>
             <li><a href="/requests">Requests to me</a></li>
         </ul>
     </div>
@@ -55,14 +57,30 @@
         </div>
     </div>
 </section>
+<div class="modal">
+    <div onclick="closeModal()" class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1 class="title">The book has been deleted! </h1>
+        </div>
+    </div>
+    <button onclick="closeModal()" class="modal-close is-large" aria-label="close"></button>
+</div>
 <script>
+    function closeModal() {
+        document.querySelector('.modal').classList += '.modal';
+        window.location = '/mybooks';
+    }
+
     var bookdelete = Array.prototype.slice.call(document.querySelectorAll('.book-delete'));
     bookdelete.forEach(function($el) {
         $el.addEventListener('click', function() {
             superagent
                 .delete('/mybooks/' + this.dataset.bookid)
                 .end((err, res) => {
-                    window.location = '/mybooks';
+                    if(res.body.success) {
+                        document.querySelector('.modal').classList += ' is-active';
+                    }
                 })
        });
     });

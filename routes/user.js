@@ -2,6 +2,7 @@ const   express     = require('express'),
         router      = express.Router(),
         checkuser   = require('../middleware/auth'),
         mongoose    = require('mongoose'),
+        request     = require('superagent'),
         Book        = mongoose.model('book'),
         User        = mongoose.model('user');
 
@@ -17,27 +18,31 @@ router.get('/mybooks', checkuser, (req, res) => {
 });
 
 // Form to add a book 📕
-router.get('/mybooks/add', checkuser, (req, res) => {
+router.get('/mybooks/add', (req, res) => {
     let q = req.query.q;
-    // ⚔️⚔️⚔ ****************************
-    // TODO: Change the test data
-    const serverResponse = require('../data/books.json')['items'];
-    const books = serverResponse.map(x => {
-        return {
-            title: x.volumeInfo.title,
-            authors: x.volumeInfo.authors,
-            description: x.volumeInfo.description,
-            imgurl: x.volumeInfo.imageLinks.thumbnail
-        }
-    });
-    // ⚔️⚔️⚔ ****************************
     let data;
     if (q) {
-        data = { books, q }
+        let url = `https://www.googleapis.com/books/v1/volumes?q=${q}&key=${process.env.GOOG_API_KEY}`;
+        request
+            .get(url)
+            .end((err, response) => {
+                if (err) console.log(err.message);
+                const serverResponse = response.body.items;
+                const books = serverResponse.map(x => {
+                    return {
+                        title: x.volumeInfo.title || '',
+                        authors: x.volumeInfo.authors || '',
+                        description: x.volumeInfo.description || '',
+                        imgurl: x.volumeInfo.imageLinks ? x.volumeInfo.imageLinks.thumbnail : ''
+                    }
+                });
+                data = {books, q};
+                res.render('addbooks', data);
+            })
     } else {
-        data = { books: undefined, q: '' }
+        data = { books: undefined, q: '' };
+        res.render('addbooks', data);
     }
-    res.render('addbooks', data);
 });
 
 // Endpoint to add the book 📕

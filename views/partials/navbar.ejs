@@ -11,13 +11,15 @@
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-end">
                 <% if(!authenticated)  { %>
+                <a href="/books" class="navbar-item">All Books</a>
                 <a href="/signup" class="navbar-item">Signup</a>
                 <a href="/login" class="navbar-item">Login</a>
                 <% } else { %>
-                <a href="/books" class="navbar-item">All Books</a>
-                <a href="/mybooks" class="navbar-item">My Books</a>
-                <a href="/settings" class="navbar-item"><i class="fa fa-cog"></i></a>
-                <a href="/logout" class="navbar-item">Logout</a>
+                <a href="/books" class="navbar-item"></i>&nbsp;All Books</a>
+                <a href="/mybooks/add" class="navbar-item"></i>&nbsp;Add a book</a>
+                <a href="/mybooks" class="navbar-item"></i>&nbsp;My Books</a>
+                <a href="/settings" class="navbar-item"></i>&nbsp;Settings</a>
+                <a href="/logout" class="navbar-item"></i>&nbsp;Logout</a>
                 <% } %>
             </div>
         </div>

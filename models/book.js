@@ -25,8 +25,12 @@ const bookSchema = mongoose.Schema({
         default: new Date()
     },
     requested: {
-      type: Boolean,
-      default: false
+        type: Boolean,
+        default: false
+    },
+    approved: {
+        type: String,
+        default: 'pending'
     },
     requestedby: {
         user: mongoose.Schema.Types.ObjectId,

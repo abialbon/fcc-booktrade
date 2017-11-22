@@ -4,6 +4,8 @@
 <body>
 <%- include('partials/navbar.ejs') %>
 
+<%- include('partials/section-head.ejs', { svgurl: './svg/mailman.svg', titletext: 'Requests to me' })%>
+
 <div class="container">
     <div class="tabs">
         <ul>
@@ -47,6 +49,11 @@
                             </div>
                             <span class="tag">Requested on <%= books[i].date.toDateString() %></span>
                             <span class="tag">Requested by <%= books[i].requestedby.name %></span>
+                            <span class="tag is-success"><%= books[i].approved %></span>
+                            <nav class="book-requests">
+                                <button data-bookid="<%= books[i]._id %>" class="book-approve button is-light">Approve</button>
+                                <button data-bookid="<%= books[i]._id %>" class="book-reject button is-danger">Reject</button>
+                            </nav>
                         </div>
                     </article>
                 </div>
@@ -56,8 +63,43 @@
         </div>
     </div>
 </section>
+<div class="modal">
+    <div onclick="closeModal()" class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1 id="modal-message" class="title">The book has been deleted! </h1>
+        </div>
+    </div>
+    <button onclick="closeModal()" class="modal-close is-large" aria-label="close"></button>
+</div>
 <script>
+    function closeModal() {
+        document.querySelector('.modal').classList += '.modal';
+        window.location = '/requests';
+    }
 
+    var approve = Array.prototype.slice.call(document.querySelectorAll('.book-approve'));
+    approve.forEach(function($el) {
+       $el.addEventListener('click', function() {
+          superagent
+              .post('/request/approve/' + this.dataset.bookid)
+              .end((err, res) => {
+                  document.querySelector('#modal-message').innerText = res.body.success;
+                  document.querySelector('.modal').classList += ' is-active';
+              })
+       });
+    });
+    var reject = Array.prototype.slice.call(document.querySelectorAll('.book-reject'));
+    reject.forEach(function($el) {
+        $el.addEventListener('click', function() {
+            superagent
+                .post('/request/reject/' + this.dataset.bookid)
+                .end((err, res) => {
+                    document.querySelector('#modal-message').innerText = res.body.success;
+                    document.querySelector('.modal').classList += ' is-active';
+                })
+        });
+    });
 </script>
 </body>
 </html>

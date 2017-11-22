@@ -4,24 +4,18 @@
 <body>
 <%- include('partials/navbar.ejs') %>
 
-<section class="header">
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-one-fifth-tablet header-pic">
-                <img src="./svg/bookshelf.svg" alt="">
-            </div>
-            <div class="column is-two-fifths-tablet header-title">
-                <h1 class="title is-1 has-text-white">All Books</h1>
-            </div>
-        </div>
-    </div>
-</section>
+<%- include('partials/section-head.ejs', { svgurl: './svg/bookshelf.svg', titletext: 'All Books' })%>
 
 <section>
     <div class="container">
         <div class="columns">
             <div class="column is-one-quarter-tablet">
-
+                <div class="box">
+                    <div class="title is-4">Welcome to Stork Books</div>
+                    <% if (!user ) { %>
+                        <p>Login in to request/add books</p>
+                    <% } %>
+                </div>
             </div>
             <div class="column is-three-quarters-tablet">
                 <!-- ➿ looping the returned results here... -->
@@ -50,10 +44,12 @@
                                 </p>
                             </div>
                             <!--Todo: Check this...strange behaviour 🙄 -->
-                            <% if(!books[i].user.equals(user._id)) { %>
-                                <button data-bookid="<%= books[i]._id %>" class="book-request button is-warning has-text-white">Request</button>
-                            <% } else { %>
-                                <button class="button is-light" disabled>Your book! </button>
+                            <% if (user) { %>
+                                <% if(!books[i].user.equals(user._id)) { %>
+                                    <button data-bookid="<%= books[i]._id %>" class="book-request button is-warning has-text-white">Request</button>
+                                <% } else { %>
+                                    <button class="button is-light" disabled>Your book! </button>
+                                <% } %>
                             <% } %>
                         </div>
                     </article>
@@ -61,19 +57,35 @@
                 <% }} %>
 
             <!-- 💃 Pagination -->
+                <% if (pages > 1) { %>
                 <%- include('partials/pagination.ejs') %>
+                <% } %>
             </div>
         </div>
     </div>
 </section>
+<div class="modal">
+    <div onclick="closeModal()" class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1 class="title">Your request has been sent!</h1>
+        </div>
+    </div>
+    <button onclick="closeModal()" class="modal-close is-large" aria-label="close"></button>
+</div>
 <script>
+    function closeModal() {
+        document.querySelector('.modal').classList += '.modal';
+        window.location = '/books';
+    }
+
     var bookrequests = Array.prototype.slice.call(document.querySelectorAll('.book-request'));
     bookrequests.forEach(function($el) {
         $el.addEventListener('click', function() {
             superagent
                 .post('/books/' + this.dataset.bookid)
                 .end((err, res) => {
-                    console.log(res.body);
+                    document.querySelector('.modal').classList += ' is-active';
                 })
         })
     })
